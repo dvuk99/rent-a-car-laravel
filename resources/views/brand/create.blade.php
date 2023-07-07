@@ -8,6 +8,12 @@
         <input type="text" class="form-control" id="brand" name="name">
         <label for="model">Model:</label>
         <input type="text" class="form-control" id="model" name="model_name">
+        <p class="text-danger">
+            @if(isset($error)) 
+            {{$error}} 
+            @else 
+            @endif
+        </p>
         <button class="btn btn-success">Sacuvaj</button>
     </form>
     </div>

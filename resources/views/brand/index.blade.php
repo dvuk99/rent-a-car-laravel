@@ -11,7 +11,8 @@
                 
                 <th>Proizvodjac automobila</th>
                 <th>Model automobila</th>
-
+                <th></th>
+                <th></th>
                 </tr>
             </thead>
 
@@ -22,6 +23,7 @@
                   <tr>
                     <td>{{$brand->name}}</td>
                     <td>{{$model->name}}</td>
+                    <td><a href="{{route('brand.edit',['id'=>$brand->id,'model_id'=>$model->id])}}">Izmjena</a></td>
                   </tr>
                 @endforeach
                 
