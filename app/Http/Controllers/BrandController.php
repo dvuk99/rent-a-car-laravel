@@ -45,4 +45,32 @@ class BrandController extends Controller
         return view('brand.index',compact('brands'));
     
     }
+
+    public function edit($id){
+        $brand = Brand::find($id);
+        return view('brand.edit',compact('brand'));
+    }
+
+    public function indexBrand(){
+        $brands = Brand::all();
+        return view('brand.index-brand',compact('brands'));
+    }
+
+    public function update(Brand $brand,Request $request){
+         $name = $request->get('name');
+         $brand->update(['name'=> $name]);
+         $brands =  Brand::all();
+         return view('brand.index-brand',compact('brands'));
+    }
+
+    public function delete(Brand $brand){
+        $brand->delete();
+        $brands = Brand::all();
+        return view('brand.index-brand',compact('brands'));
+    }
+
+    public function fetchData($selectedBrandId){
+        $brand = Brand::find($selectedBrandId);
+        return response()->json($brand->cmodels);
+    }
 }

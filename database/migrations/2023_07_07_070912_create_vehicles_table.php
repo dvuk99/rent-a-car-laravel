@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('transmission');
             $table->string('fuel_type');
             $table->string('vehicle_type');
-            $table->foreignId('brand_id')->constrained('brands');
+            $table->foreignId('brand_id')->constrained('brands')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreignId('cmodel_id')->constrained('cmodels')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

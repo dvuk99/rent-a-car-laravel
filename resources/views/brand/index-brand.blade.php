@@ -9,8 +9,7 @@
                 <tr>
 
                 
-                <th>Proizvodjac automobila</th>
-                <th>Model automobila</th>
+                <th>Marka automobila</th>
                 <th></th>
                 <th></th>
                 </tr>
@@ -19,13 +18,17 @@
             <tbody>
             @foreach($brands as $brand)   
             
-                @foreach($brand->cmodels as $model)
-                  <tr>
-                    <td>{{$brand->name}}</td>
-                    <td>{{$model->name}}</td>
-                    
-                  </tr>
-                @endforeach
+               <tr>
+                <td>{{$brand->name}}</td>
+                <td><a href="{{route('brand.edit',['id'=>$brand->id])}}" class="btn btn-primary">izmjena</a></td>
+                <td>
+                    <form action="{{route('brand.delete',['brand'=>$brand])}}" method ="POST">
+                        @csrf 
+                        @method('DELETE')
+                        <button class="btn btn-danger">brisanje</button>
+                    </form>
+                </td>
+               </tr>
                 
 
                 
