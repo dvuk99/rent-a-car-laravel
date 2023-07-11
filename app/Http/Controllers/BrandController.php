@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Brand;
 use App\Models\Cmodel;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\BrandRequest;
 use DB;
 class BrandController extends Controller
@@ -42,7 +44,7 @@ class BrandController extends Controller
             
         }
         $brands = Brand::all();
-        return view('brand.index',compact('brands'));
+        return Redirect::route('cmodel.index');
     
     }
 
@@ -60,7 +62,7 @@ class BrandController extends Controller
          $name = $request->get('name');
          $brand->update(['name'=> $name]);
          $brands =  Brand::all();
-         return view('brand.index-brand',compact('brands'));
+         return Redirect::route('cmodel.index');
     }
 
     public function delete(Brand $brand){
@@ -69,8 +71,19 @@ class BrandController extends Controller
         return view('brand.index-brand',compact('brands'));
     }
 
-    public function fetchData($selectedBrandId){
+    public function getBrandsForCreate($selectedBrandId){
         $brand = Brand::find($selectedBrandId);
+        if(isset($brand)){
+           
         return response()->json($brand->cmodels);
+        }else{
+            $obj = (object)[];
+            return response()->json($obj);
+        }
+    }
+
+    public function getBrandsForUpdate($getBrandId){
+        $brand = Brand::find($getBrandId);
+         return response()->json($brand->cmodels);      
     }
 }

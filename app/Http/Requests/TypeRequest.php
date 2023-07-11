@@ -22,11 +22,11 @@ class TypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'=>['required']
+            'name'=>'required'
         ];
     }
 
-    public function message(): array {
+    public function messages(): array {
         return [
             'name.required'=>"Morate unijeti naziv klase"
         ];

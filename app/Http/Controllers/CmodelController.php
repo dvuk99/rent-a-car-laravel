@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Cmodel;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+
 
 class CmodelController extends Controller
 {
@@ -25,12 +27,13 @@ class CmodelController extends Controller
     }
 
     public function delete(Cmodel $cmodel){
+         
         $brands = Brand::find($cmodel->brand_id);
         $cmodel->delete();
         if(!(isset($brands->cmodels[0]))){
             $brands->delete();
         }
-        return view('cmodel.index',compact('brands'));
+        return Redirect::route('cmodel.index');
         
         
        

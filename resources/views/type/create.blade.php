@@ -6,6 +6,9 @@
             @csrf
             <label for="typeName">Ime klase</label>
             <input type="text" class="form-control" name="name" id="typeName">
+            @error('name')
+                <div class="alert alert-danger mt-2"> {{ $message }} </div>
+            @enderror
             <button class="btn btn-success w-100 mt-3">Sacuvaj</button>
         </form>
     </div>

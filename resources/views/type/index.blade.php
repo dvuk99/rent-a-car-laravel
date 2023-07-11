@@ -22,7 +22,7 @@
                         <form action="{{route('type.delete',['type'=>$type])}}" method="POST">
                            @csrf  
                            @method('DELETE')    
-                           <button class="btn btn-danger btn-sm">brisanje</button>
+                           <button class="btn btn-danger btn-sm" onclick = "return confirm('Da li ste sigurni da zelite da izbrisete?')" >brisanje</button>
                         </form>
                      </td>
                 </tr>

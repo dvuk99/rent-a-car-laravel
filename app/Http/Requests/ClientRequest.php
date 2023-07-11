@@ -24,10 +24,10 @@ class ClientRequest extends FormRequest
         return [
             'first_name' => ['required','min:2'],
             'last_name' => ['required', 'min:2'],
-            'document_id' => ['required'],
+            'document_id' => 'exists:documents,id',
             'document_number' => ['required'],
-            'birthday' => ['required'],
-            'country_id' => ['required']
+            'birthday' => 'date',
+            'country_id' => 'exists:countries,id'
         ];
     }
 
@@ -37,10 +37,10 @@ class ClientRequest extends FormRequest
             'first_name.min' => 'Ime mora da sadrzi najmanje :min karaktera',
             'last_name.required' => 'Molimo Vas da unesete prezime',
             'last_name.min' => 'Prezime mora da sadrzi najmanje :min karaktera',
-            'document_id.required' => 'Morate izabrati tip dokumenta',
+            'document_id.exists' => 'Morate izabrati tip dokumenta',
             'document_number.required' => 'Morate unijeti broj dokumenta',
-            'birthday.required' => 'Morate izabrati datum rodjenja',
-            'country_id.required' => 'Morate izabrati drzavu'
+            'birthday.date' => 'Morate izabrati datum rodjenja',
+            'country_id.exists' => 'Morate izabrati drzavu'
           ];
     }
 }

@@ -7,6 +7,9 @@
             @method('PUT')
             <label for="type">Izmijenite ime</label>
             <input type="text" id="type" class="form-control" name="name" value="{{$type->name}}">
+            @error('name')
+                <div class="alert alert-danger"> {{ $message }} </div>
+            @enderror
             <button class="btn btn-success w-100">Sacuvaj</button>
         </form>   
     </div>

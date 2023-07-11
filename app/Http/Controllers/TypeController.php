@@ -20,7 +20,7 @@ class TypeController extends Controller
     public function save(TypeRequest $request){
              Type::query()->create($request->validated());
              $types = Type::all();
-             return view('type.index',compact('types'));
+             return Redirect::route('type.index');
     }
 
     public function edit($id){

@@ -62,5 +62,12 @@ Route::delete('/types/{type}',[TypeController::class,'delete'])->name('type.dele
 
 Route::get('/vehicles',[VehicleController::class,'index'])->name('vehicle.index');
 Route::get('/vehicles/create',[VehicleController::class,'create'])->name('vehicle.create');
-Route::get('/brands/cmodels/{selectedBrandId}',[BrandController::class,'fetchData']);
+Route::get('/brands/cmodels/{selectedBrandId}',[BrandController::class,'getBrandsForCreate']);
+Route::post('/vehicles/save',[VehicleController::class,'save'])->name('vehicle.save');
+Route::get('/vehicles/{id}/edit',[VehicleController::class,'edit'])->name('vehicle.edit');
+Route::get('/brands/cmodels/update/{getBrandId}',[BrandController::class,'getBrandsForUpdate']);
+Route::put('/vehicles/{id}/update',[VehicleController::class,'update'])->name('vehicle.update');
+Route::delete('/vehicles/{vehicle}/delete',[VehicleController::class,'delete'])->name('vehicle.delete');
+// test
+Route::get('/brands/help/{selectedBrandId}',[BrandController::class,'fetchData']);
 //Route::get('/countries',[CountryController::class,'fetchInsert'])->name('country.index');

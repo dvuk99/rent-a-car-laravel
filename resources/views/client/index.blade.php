@@ -1,7 +1,8 @@
 @extends('main-layout')
+<h3 class="text-center mt-3 ">Klijenti</h3>
 <div class="row">
-<div class="col-8  table-responsive">
-<table class="table table-hover mt-4">
+<div class="col-8 offset-2 table-responsive">
+<table class="table table-hover mt-3">
                 <thead>
                 <tr>
                     <th>ID</th>
@@ -32,7 +33,7 @@
                            <form action="{{ route('client.delete', ['client' => $client]) }}" method = "POST">
                                @method('DELETE')    
                                @csrf 
-                              <button class="btn btn-sm btn-danger">Izbrisi</button>
+                              <button class="btn btn-sm btn-danger" onclick="return confirm('Da li ste sigurni da zelite da uklonite klijenta?')">Izbrisi</button>
                            </form>
                         </td>
                      </tr>
