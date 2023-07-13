@@ -44,6 +44,11 @@
             @error('country_id')
                 <div class="alert alert-danger mt-2">{{ $message }}</div>
             @enderror
+            
+            <input type="hidden" name="vehicle_id" value="{{$vehicle_id}}">
+            <input type="hidden" name="beginning" value="{{$dateStart}}">
+            <input type="hidden" name="end" value="{{$dateEnd}}">
+
             <button class="btn btn-success form-control">Sacuvaj podatke</button>
         </form>
         

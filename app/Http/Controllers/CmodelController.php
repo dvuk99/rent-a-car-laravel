@@ -9,8 +9,13 @@ use Illuminate\Support\Facades\Redirect;
 
 class CmodelController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         $brands = Brand::all();
+        if($request->has('searchTerm')){
+            $searchTerm = $request->get('searchTerm');
+            $brands = Cmodel::searchBrandAndModels($searchTerm);
+              
+        }
         return view('cmodel.index',compact('brands'));
     }
 

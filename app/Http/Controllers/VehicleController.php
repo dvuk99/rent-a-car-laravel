@@ -5,6 +5,7 @@ use App\Models\Brand;
 use App\Models\Type;
 use App\Models\Vehicle;
 use App\Models\Cmodel;
+use App\Models\ClientVehicle;
 
 use Illuminate\Http\Request;
 
@@ -14,9 +15,23 @@ use App\Http\Requests\VehicleRequest;
 
 class VehicleController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
+        
         $vehicles = Vehicle::all();
+        if($request->has('searchTerm')){
+            $searchTerm = $request->get('searchTerm');
+
+            $brands = Brand::search($searchTerm);
+            $cmodels = Cmodel::search($searchTerm);
+            if(isset($brands[0])){
+                  $vehicles = Vehicle::search($brands[0]->id); 
+            }else if(isset($cmodels[0])){
+                  $vehicles = Vehicle::search($cmodels[0]->id);
+            }
+            
+        }
         return view('vehicle.index',compact('vehicles'));
+        
     }
 
     public function create(){
@@ -53,6 +68,58 @@ class VehicleController extends Controller
     public function delete(Vehicle $vehicle){
         $vehicle->delete();
         return Redirect::route('vehicle.index');
+    }
+
+    public function testDoktor(){
+        $vozilo=Brand::search("audi");
+        //dd(isset($vozilo[0]->name));
+        $model = Cmodel::search("clio");
+        dd($model);
+    }
+
+    public function index_reservation(){
+        $reservations = ClientVehicle::all();
+        return view('reservation.index',compact('reservations'));
+    }
+
+    public function saveRes(Request $request){
+        $details = $request->except('_token');
+        ClientVehicle::query()->create($details);
+    }
+    public function indexRes(){
+        return view('reservation.create');
+    }
+
+    public function search(){
+        $arrayTransmission = array("Manual","Automatik");
+        $arrayFuelType = array("Dizel","Benzin","Hibrid","Elektricno");
+        $types = Type::all();
+        return view('reservation.create',compact('arrayTransmission','arrayFuelType','types'));
+    }
+
+    public function reservation(Request $request){
+        $dateFrom = $request->get('beginning');
+        $dateEnd = $request->get('end');
+
+        $vehiclesReserved = ClientVehicle::compare($dateFrom, $dateEnd);
+        $filterVehiclesReserved =  ClientVehicle::filter($vehiclesReserved,$request,"Reserved");
+        
+        $notReservedVehicles = ClientVehicle::allNotReservedVehicles();
+        $filterVehiclesNotReserved = ClientVehicle::filter($notReservedVehicles,$request,"NotReserved");
+
+        $filterVehicles = $filterVehiclesReserved + $filterVehiclesNotReserved;
+        
+        return view('reservation.free-cars',['filterVehicles'=>$filterVehicles,'dateFrom'=>$dateFrom,'dateEnd'=>$dateEnd]);
+    }
+
+    public function allReservations(){
+        $reservations = ClientVehicle::all();
+        return view('reservation.index',compact('reservations'));
+    }
+
+    public function deleteReservation(ClientVehicle $reservation){
+        $reservation->delete();
+        return Redirect::route('vehicle.allReservations');
     }
 
 }

@@ -19,4 +19,11 @@ class Vehicle extends Model
     public function type(){
         return $this->belongsTo(Type::class);
     }
+    public function clients(){
+        return $this->hasMany(Client::class);
+    }
+    public static function search($searchTerm){
+        return Vehicle::query()->where('cmodel_id','like',"%$searchTerm%")
+                               ->orwhere('brand_id','like',"%$searchTerm%")->get();
+    }
 }

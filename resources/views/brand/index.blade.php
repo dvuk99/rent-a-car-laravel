@@ -1,4 +1,5 @@
 @extends('main-layout')
+@include('navbar')
 <h3 class="text-center mt-3">Automobili</h3>
 <div class="row">
 

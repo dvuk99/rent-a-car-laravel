@@ -20,4 +20,14 @@ class Cmodel extends Model
         return $this->hasMany(Vehicle::class);
     }
 
+    public static function search($searchTerm){
+        return Cmodel::query()->where('name','like',"%$searchTerm%")->get();
+    }
+    public static function searchBrandAndModels($searchTerm){
+        $brand = Brand::query()->where('name','like',"%$searchTerm%")->get();
+        $cmodel = Cmodel::query()->where('name','like',"%$searchTerm%")->get();
+        if(isset($brand[0])) return $brand;
+
+}
+
 }

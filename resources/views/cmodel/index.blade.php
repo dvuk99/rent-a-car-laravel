@@ -1,15 +1,22 @@
 @extends('main-layout')
-
+@include('navbar')
 
 <h3 class="text-center mt-3">Marke automobila</h3>
 <div class="row">
-    <div class="col-3 offset-9 ">
-        <a href="{{route('brand.create')}}" class="btn btn-success w-50">+Dodaj</a>
-    </div>
-</div>
-<div class="row">
-    
-        <div class="col-6 offset-3 mt-2">
+        <div class="col-6 offset-3 mt-3">
+            <form action="{{route('cmodel.index')}}" method="GET">
+                <div class="row">
+                   <div class="col-6">
+                        <input type="text" class="form-control" name="searchTerm">
+                   </div> 
+                   <div class="col-3">
+                    <button class="btn btn-success">Pretrazi</button>
+                   </div>
+                   <div class="col-3">
+                    <a href="{{route('brand.create')}}" class="btn btn-success w-50">+Dodaj</a>
+                   </div>
+                </div>
+            </form>
              <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -31,11 +38,11 @@
                                         </form>
                                       </td>
                             </tr>
-                            <tr><td></td><td></td><td></td></tr>
+                           
                            @foreach($brand->cmodels as $model)
                                
                                <tr>
-
+                                  
                                   <td>{{$model->name}}</td>
                                   <td> <a href="{{route('cmodel.edit',['id'=>$model->id])}}" class="btn btn-primary btn">izmjena</a> </td>
                                   <td>

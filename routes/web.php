@@ -24,9 +24,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/clients',[ClientController::class,'index'])->name('contact.index');
+Route::get('/clients',[ClientController::class,'index'])->name('client.index');
 Route::get('/countries',[CountryController::class,'index'])->name('country.index');
-Route::get('/clients/create',[ClientController::class,'create'])->name('client.create');
+Route::post('/clients/create',[ClientController::class,'create'])->name('client.create');
 Route::post('/clients',[ClientController::class,'save'])->name('client.save');
 Route::get('/clients/{id}/edit',[ClientController::class,'edit'])->name('client.edit');
 Route::put('/clients/{client}',[ClientController::class,'update'])->name('client.update');
@@ -68,6 +68,20 @@ Route::get('/vehicles/{id}/edit',[VehicleController::class,'edit'])->name('vehic
 Route::get('/brands/cmodels/update/{getBrandId}',[BrandController::class,'getBrandsForUpdate']);
 Route::put('/vehicles/{id}/update',[VehicleController::class,'update'])->name('vehicle.update');
 Route::delete('/vehicles/{vehicle}/delete',[VehicleController::class,'delete'])->name('vehicle.delete');
+Route::get('/vehicles/search',[VehicleController::class,'search'])->name('vehicle.search');
+Route::post('/vehicles/reservation',[VehicleController::class,'reservation'])->name('vehicle.reservation');
+Route::get('/vehicles/allReservations',[VehicleController::class,'allReservations'])->name('vehicle.allReservations');
+Route::delete('/vehicles/reservation/{reservation}/delete',[VehicleController::class,'deleteReservation'])->name('reservation.delete');
+
+
+
 // test
-Route::get('/brands/help/{selectedBrandId}',[BrandController::class,'fetchData']);
+
+//Route::get('/brands/help/{selectedBrandId}',[BrandController::class,'fetchData']);
 //Route::get('/countries',[CountryController::class,'fetchInsert'])->name('country.index');
+//Route::get('/vehicles/doctor',[VehicleController::class,'testDoktor'])->name('vehicle.doctor');
+
+//Reservation
+
+Route::post('/vehicles/sve',[VehicleController::class,'saveRes'])->name('vehicle.sve');
+Route::get('/reservations',[VehicleController::class,'indexRes'])->name('reservations.index');

@@ -1,4 +1,5 @@
 @extends('main-layout')
+@include('navbar')
 <h3 class="mt-3 text-center">Klasa vozila</h3>
 <div class="row text-center">
     <div class="col-8 offset-4 mt-3 table-responsive">

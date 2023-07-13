@@ -24,13 +24,15 @@ class BrandRequest extends FormRequest
         return [
              'name' => 'required',
              'model_name' => 'required'
+             
         ];
     }
 
     public function messages():array{
         return [
             'name.required' => "Morate unijeti marku automobila",
-            'model_name' => "Morate unijeti model auta"
+            'model_name.required' => "Morate unijeti model auta",
+            
         ];
     }
 }
