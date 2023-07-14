@@ -6,7 +6,6 @@ use App\Models\Type;
 use App\Models\Vehicle;
 use App\Models\Cmodel;
 use App\Models\ClientVehicle;
-
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Http;
@@ -16,7 +15,7 @@ use App\Http\Requests\VehicleRequest;
 class VehicleController extends Controller
 {
     public function index(Request $request){
-        
+       
         $vehicles = Vehicle::all();
         if($request->has('searchTerm')){
             $searchTerm = $request->get('searchTerm');
@@ -101,12 +100,17 @@ class VehicleController extends Controller
     
         $dateFrom = $request->get('beginning');
         $dateEnd = $request->get('end');
-       
+        //dd($request->all());
+        $flag=1;
+        $notReservedVehicles = Vehicle::filterBy(request()->all(),$flag)->get();
+        $flag = 0;
+        $reservedVehicles = Vehicle::filterBy(request()->all(),$flag)->get();
         //$clientVehicles = ClientVehicle::allReserved($request,$dateFrom,$dateEnd); 
-        $notReservedVehicles = ClientVehicle::allNotRes($request);
-        
+        //$notReservedVehicles = ClientVehicle::allNotRes($request);
+        //$filterVehicles = $notReservedVehicles + $reservedVehicles;
+        dd($reservedVehicles[0]);
       
-        return view('reservation.free-cars',['filterVehicles'=>$notReservedVehicles,'dateFrom'=>$dateFrom,'dateEnd'=>$dateEnd]);
+        return view('reservation.free-cars',['filterVehicles'=> $filterVehicles,'dateFrom'=>$dateFrom,'dateEnd'=>$dateEnd]);
     }
 
     public function allReservations(){

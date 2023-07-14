@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use App\Utilities\FilterBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,4 +26,13 @@ class Vehicle extends Model
         return Vehicle::query()->where('cmodel_id','like',"%$searchTerm%")
                                ->orwhere('brand_id','like',"%$searchTerm%")->get();
     }
+
+    public function scopeFilterBy($query, $filters,$flag)
+    { 
+        $namespace = 'App\Utilities\VehicleFilters';
+        $filter = new FilterBuilder($query, $filters, $namespace, $flag);
+
+        return $filter->apply();
+    }
+
 }
