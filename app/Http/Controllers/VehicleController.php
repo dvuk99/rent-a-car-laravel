@@ -98,18 +98,15 @@ class VehicleController extends Controller
     }
 
     public function reservation(Request $request){
+    
         $dateFrom = $request->get('beginning');
         $dateEnd = $request->get('end');
-
-        $vehiclesReserved = ClientVehicle::compare($dateFrom, $dateEnd);
-        $filterVehiclesReserved =  ClientVehicle::filter($vehiclesReserved,$request,"Reserved");
+       
+        //$clientVehicles = ClientVehicle::allReserved($request,$dateFrom,$dateEnd); 
+        $notReservedVehicles = ClientVehicle::allNotRes($request);
         
-        $notReservedVehicles = ClientVehicle::allNotReservedVehicles();
-        $filterVehiclesNotReserved = ClientVehicle::filter($notReservedVehicles,$request,"NotReserved");
-
-        $filterVehicles = $filterVehiclesReserved + $filterVehiclesNotReserved;
-        
-        return view('reservation.free-cars',['filterVehicles'=>$filterVehicles,'dateFrom'=>$dateFrom,'dateEnd'=>$dateEnd]);
+      
+        return view('reservation.free-cars',['filterVehicles'=>$notReservedVehicles,'dateFrom'=>$dateFrom,'dateEnd'=>$dateEnd]);
     }
 
     public function allReservations(){
@@ -120,6 +117,11 @@ class VehicleController extends Controller
     public function deleteReservation(ClientVehicle $reservation){
         $reservation->delete();
         return Redirect::route('vehicle.allReservations');
+    }
+
+    public function help(){
+        $vehicles = ClientVehicle::newFilter();
+        dd($vehicles);
     }
 
 }

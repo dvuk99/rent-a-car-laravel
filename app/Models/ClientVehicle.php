@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class ClientVehicle extends Model
 {
@@ -26,60 +27,51 @@ class ClientVehicle extends Model
         return $brandName." ".$modelName;
     }
 
-    public static function between($dateForCompareFrom,$dateForCompareEnd,$dateFromRequest,$dateEndRequest){
-       if($dateForCompareFrom<=$dateFromRequest and $dateForCompareEnd>=$dateFromRequest) return true;
-       else if($dateForCompareFrom>=$dateFromRequest and $dateForCompareFrom <= $dateEndRequest) return true;
-       else if($dateForCompareFrom <= $dateFromRequest and ($dateForCompareEnd<=$dateEndRequest and $dateForCompareEnd>=$dateFromRequest)) return true;
 
-        
-    }
-
-    public static function compare($dateFrom,$dateEnd){
-        $allReservedVehicles = ClientVehicle::all();
-        $allReservedVehiclesFilter = array();
-        foreach($allReservedVehicles as $vehicle){
-            if(!ClientVehicle::between($vehicle->beginning,$vehicle->end,$dateFrom,$dateEnd)){
-                    $allReservedVehiclesFilter[] = $vehicle;
-            }
-        }
-        return $allReservedVehiclesFilter;
-
-    }
-
-    public static function filter($freeVehicles,$request,$flag){
-        $filterVehicles = [];
+   
+    public static function allReserved($request,$dateStartRequest,$dateEndRequest){
         $transmission = $request->get('transmission');
         $fuelType = $request->get('fuel_type');
-        $type = $request->get('type_id');
         $year = $request->get('year_production');
-        if($flag=="Reserved"){
-        foreach($freeVehicles as $freeVehicle){
-           if($freeVehicle->vehicle->transmission==$transmission and $freeVehicle->vehicle->fuel_type==$fuelType and 
-              $freeVehicle->vehicle->type_id==$type and $freeVehicle->vehicle->year_production>=$year)
-                $filterVehicles[] = $freeVehicle->vehicle;
-        }
-        return $filterVehicles;
-    }else {
-        foreach($freeVehicles as $freeVehicle){
-            if($freeVehicle->transmission == $transmission and $freeVehicle->fuel_type==$fuelType and
-               $freeVehicle->type_id == $type and $freeVehicle->year_production >= $year)
-               $filterVehicles[] = $freeVehicle;
-        }
-        return $filterVehicles;
-    }
+        $type = $request->get('type_id');
+
+       $vehicles = Vehicle::select('vehicles.*','client_vehicle.*')
+                            ->join('client_vehicle','vehicles.id','=','client_vehicle.vehicle_id')
+                            ->where([
+                                ['vehicles.transmission','=',$transmission],
+                                ['vehicles.fuel_type','=',$fuelType],
+                                ['vehicles.year_production','>=',$year],
+                                ['vehicles.type_id','=',$type]
+                            ])
+                            ->where('client_vehicle.end','<',$dateStartRequest)
+                            ->orwhere('client_vehicle.beginning','>',$dateEndRequest)
+                            ->groupBy('vehicles.id')
+                            ->get();
+                            
+                            return $vehicles;
+    } 
+
+    public static function allNotRes($request){
+        $transmission = $request->get('transmission');
+        $fuelType = $request->get('fuel_type');
+        $year = $request->get('year_production');
+        $type = $request->get('type_id');
+
+        $cars = Vehicle::select('vehicles.*')
+                         ->leftJoin('client_vehicle','vehicles.id','=','client_vehicle.vehicle_id')
+                         ->whereNull('client_vehicle.vehicle_id')
+                         ->groupBy('vehicles.id')->get();
+                            return $cars;
     }
 
-    public static function allNotReservedVehicles(){
-        $cars = Vehicle::all();
-        $reservedVehicles = ClientVehicle::all();
-        $vehicles = [];
-        foreach($cars as $car){
-            $flag=0;
-            foreach($reservedVehicles as $reservedVehicle){
-                if($car->id == $reservedVehicle->vehicle_id) $flag=1;
-           }
-           if($flag==0) $vehicles[] = $car;
-        }
-        return $vehicles; 
-    }
 }
+
+/* 
+
+(select * from vehicles
+ left join client_vehicle
+ on vehicles.id = client_vehicle.vehicle_id
+ where client_vehicle.vehicle_id is  NULL
+GROUP BY vehicles.id);
+
+*/
