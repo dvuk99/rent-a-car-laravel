@@ -19,6 +19,7 @@ class FilterBuilder
     {
        
     foreach ($this->filters as $name => $value) {
+        
         $normailizedName = ucfirst($name);
         $class = $this->namespace . "\\{$normailizedName}";
 
@@ -26,7 +27,7 @@ class FilterBuilder
             continue;
         }
 
-        if (strlen($value)) {
+        if (strlen($value) and $value!=0) {
             $cls = new $class($this->query);
             if($name=="beginning" or $name=="end"){
                 $cls->handle($value, $this->flag);

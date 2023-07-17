@@ -1,5 +1,5 @@
 @extends('main-layout')
-<h3 class="text-center mt-3">Dodajte novu klasu</h3>
+<h3 class="text-center mt-3">Pretrazite dostupna vozila</h3>
 <div class="row">
     <div class="col-6 offset-3 mt-3">
         <form action="{{route('vehicle.reservation')}}" method="POST">

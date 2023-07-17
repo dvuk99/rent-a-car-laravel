@@ -26,43 +26,32 @@ class ClientVehicle extends Model
         $modelName = $this->vehicle->cmodel->name;
         return $brandName." ".$modelName;
     }
-
-
-   
-    public static function allReserved($request,$dateStartRequest,$dateEndRequest){
-        $transmission = $request->get('transmission');
-        $fuelType = $request->get('fuel_type');
-        $year = $request->get('year_production');
-        $type = $request->get('type_id');
-
-       $vehicles = Vehicle::select('vehicles.*','client_vehicle.*')
-                            ->join('client_vehicle','vehicles.id','=','client_vehicle.vehicle_id')
-                            ->where([
-                                ['vehicles.transmission','=',$transmission],
-                                ['vehicles.fuel_type','=',$fuelType],
-                                ['vehicles.year_production','>=',$year],
-                                ['vehicles.type_id','=',$type]
-                            ])
-                            ->where('client_vehicle.end','<',$dateStartRequest)
-                            ->orwhere('client_vehicle.beginning','>',$dateEndRequest)
-                            ->groupBy('vehicles.id')
-                            ->get();
+    public static function search($searchTerm){
+        $brand = Brand::search($searchTerm);
+        if(isset($brand[0])){
+        $vozilo = ClientVehicle::select('client_vehicle.*')->join('vehicles','vehicles.id','client_vehicle.vehicle_id')
+                                             ->where('vehicles.brand_id','=',$brand[0]->id)->get();
+                                             
+                                             return $vozilo;
+                            }
                             
-                            return $vehicles;
-    } 
+       
+      
+        $model = Cmodel::search($searchTerm);
+        
+        if(isset($model[0])){
+            $vozilo = ClientVehicle::select('client_vehicle.*')->join('vehicles','vehicles.id','client_vehicle.vehicle_id')
+            ->where('vehicles.cmodel_id','=',$model[0]->id)->get();
+            return $vozilo;
+        }  
+        $client = Client::search($searchTerm);
+        $vozilo = ClientVehicle::select('client_vehicle.*')->join('clients','clients.id','client_vehicle.client_id')
+                                                           ->where('clients.id','=',$client[0]->id)->get();
+                                                           return $vozilo;
+    
 
-    public static function allNotRes($request){
-        $transmission = $request->get('transmission');
-        $fuelType = $request->get('fuel_type');
-        $year = $request->get('year_production');
-        $type = $request->get('type_id');
-
-        $cars = Vehicle::select('vehicles.*')
-                         ->leftJoin('client_vehicle','vehicles.id','=','client_vehicle.vehicle_id')
-                         ->whereNull('client_vehicle.vehicle_id')
-                         ->groupBy('vehicles.id')->get();
-                            return $cars;
     }
+
 
 }
 

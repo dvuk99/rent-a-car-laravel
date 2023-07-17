@@ -69,14 +69,9 @@ class VehicleController extends Controller
         return Redirect::route('vehicle.index');
     }
 
-    public function testDoktor(){
-        $vozilo=Brand::search("audi");
-        //dd(isset($vozilo[0]->name));
-        $model = Cmodel::search("clio");
-        dd($model);
-    }
+  
 
-    public function index_reservation(){
+    public function index_reservation(Request $request){
         $reservations = ClientVehicle::all();
         return view('reservation.index',compact('reservations'));
     }
@@ -100,21 +95,25 @@ class VehicleController extends Controller
     
         $dateFrom = $request->get('beginning');
         $dateEnd = $request->get('end');
-        //dd($request->all());
+        
         $flag=1;
-        $notReservedVehicles = Vehicle::filterBy(request()->all(),$flag)->get();
+        $notReservedVehicles = Vehicle::filterBy($request->all(),$flag)->get();
         $flag = 0;
-        $reservedVehicles = Vehicle::filterBy(request()->all(),$flag)->get();
-        //$clientVehicles = ClientVehicle::allReserved($request,$dateFrom,$dateEnd); 
-        //$notReservedVehicles = ClientVehicle::allNotRes($request);
-        //$filterVehicles = $notReservedVehicles + $reservedVehicles;
-        dd($reservedVehicles[0]);
+        $reservedVehicles = Vehicle::filterBy($request->all(),$flag)->get();
+        $filterVehicles = $notReservedVehicles->merge($reservedVehicles);
+    
       
         return view('reservation.free-cars',['filterVehicles'=> $filterVehicles,'dateFrom'=>$dateFrom,'dateEnd'=>$dateEnd]);
     }
 
-    public function allReservations(){
+    public function allReservations(Request $request){
         $reservations = ClientVehicle::all();
+        if($request->has('searchTerm')){
+            $searchTerm = $request->get('searchTerm');
+            $reservations = ClientVehicle::search($searchTerm);
+           
+           
+        }
         return view('reservation.index',compact('reservations'));
     }
 
@@ -123,9 +122,7 @@ class VehicleController extends Controller
         return Redirect::route('vehicle.allReservations');
     }
 
-    public function help(){
-        $vehicles = ClientVehicle::newFilter();
-        dd($vehicles);
-    }
+
+
 
 }

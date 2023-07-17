@@ -1,8 +1,10 @@
 @extends('main-layout')
+@include('navbar')
 
 <h3 class="text-center mt-3">Rezervacije</h3>
 <div class="row">
     <div class="col-8 offset-2 mt-2 table-responsive">
+      
         <table class="table table-hover">
             <thead>
                 <tr>

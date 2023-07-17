@@ -12,10 +12,14 @@
         <li class="nav-item">
           <a class="nav-link" href="{{route('vehicle.search')}}">Rezervacija</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{{route('type.index')}}">Klase vozila</a>
+        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Vozila
           </a>
+       
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="{{route('vehicle.index')}}">Sva vozila</a></li>
             <li><a class="dropdown-item" href="{{route('cmodel.index')}}">Modeli</a></li>
@@ -23,10 +27,9 @@
             <li><a class="dropdown-item" href="{{route('vehicle.allReservations')}}">Rezervisana vozila</a></li>
           </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
+       
       </ul>
+     
     </div>
   </div>
 </nav>

@@ -72,16 +72,9 @@ Route::get('/vehicles/search',[VehicleController::class,'search'])->name('vehicl
 Route::post('/vehicles/reservation',[VehicleController::class,'reservation'])->name('vehicle.reservation');
 Route::get('/vehicles/allReservations',[VehicleController::class,'allReservations'])->name('vehicle.allReservations');
 Route::delete('/vehicles/reservation/{reservation}/delete',[VehicleController::class,'deleteReservation'])->name('reservation.delete');
-Route::get('/vehicles/help',[VehicleController::class,'help']);
+Route::get('/vehicles/allReservations/search',[VehicleController::class,'searchReservation'])->name('reservation.search');
 
 
-// test
-
-//Route::get('/brands/help/{selectedBrandId}',[BrandController::class,'fetchData']);
-//Route::get('/countries',[CountryController::class,'fetchInsert'])->name('country.index');
-//Route::get('/vehicles/doctor',[VehicleController::class,'testDoktor'])->name('vehicle.doctor');
-
-//Reservation
 
 Route::post('/vehicles/sve',[VehicleController::class,'saveRes'])->name('vehicle.sve');
 Route::get('/reservations',[VehicleController::class,'indexRes'])->name('reservations.index');
